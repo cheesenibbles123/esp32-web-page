@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-UK">
+
+<script>
+	let ip = window.location.href.split("/")[1];
+
+	function updateLoop(){
+		let data = fetch(`${ip}/update`).then(response => {
+			if (response.status !== 200){
+				return `Error code: ${response.status}`;
+			}
+			response.json().then(data => {
+				sortedData = data.sort((a, b) => a.Name.localeCompare(b.Name));
+				return sortedData;
+			});
+			return null;
+		});
+
+		let output = "<ul>";
+
+		foreach (item in data){
+			let side = "";
+
+			if (item.Left){
+				side = "Left";
+			}else{
+				side = "Right";
+			}
+
+			output += `<li><b>${item.Name}</b>\nVolume: ${item.Volume}\nSide: ${side}</li>`;
+		}
+		output += "</ul>";
+
+		document.getElementByID("data").innerHTML = output;
+	}
+
+	updateLoop();
+	setInterval(()=>{
+		updateLoop();
+	},30000); // Every 10 sec
+</script>
+
+<body>
+
+<div id="data">
+	Getting Data....
+</div>
+
+</body>
+
+</html>
