@@ -3,11 +3,9 @@
 #include "esp_event.h"
 #include "string.h"
 #include "nvs_flash.h"
-#include "./webConfig.h"
 
-#define SCAN_LIST_SIZE 15
-
-static const char* TAG = "ConnectionSetup";
+#include "config.h"
+#include "wifiSetup.h"
 
 bool compareStrings(char* str1, char* str2)
 {
@@ -34,9 +32,9 @@ void getWifiConnections()
 	ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
 	// Will store each record, init's to size of scan list
-	wifi_ap_record_t ap_info[SCAN_LIST_SIZE];
+	wifi_ap_record_t ap_info[WIFI_SCAN_LIST_SIZE];
 	uint16_t ap_count = 0;
-	uint16_t num = SCAN_LIST_SIZE; // converts to uint16_t
+	uint16_t num = WIFI_SCAN_LIST_SIZE; // converts to uint16_t
 	memset(ap_info, 0, sizeof(ap_info));
 
 
@@ -49,7 +47,7 @@ void getWifiConnections()
 	ESP_LOGI(TAG, "Total scanned \t\t%u", ap_count);
 	bool isFound = false;
 
-	for (int i = 0; (i < SCAN_LIST_SIZE) && (i < ap_count); i++)
+	for (int i = 0; (i < WIFI_SCAN_LIST_SIZE) && (i < ap_count); i++)
 	{
 	        if (!isFound)
 	        {
@@ -63,10 +61,8 @@ void getWifiConnections()
 	        }
 	}
 
-	esp_wifi_stop();
-
 	if (isFound){
-		//
+		setupWifi();
 	}else{
 		ESP_LOGI(TAG,"Network not found.");
 	}
