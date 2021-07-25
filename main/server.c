@@ -11,17 +11,10 @@
 #include "server.h"
 #include "config.h"
 
-static char HTML[] = "<!DOCTYPE HTML5>\n\
-		<html>\n\
-		<body>\n\
-		Random webpage!\n\
-		</body>\n\
-		</html>";
-
 const char *type = "text/html";
 
 /* An HTTP GET handler */
-static esp_err_t hello_get_handler(httpd_req_t *req)
+static esp_err_t get_handler(httpd_req_t *req)
 {
     char*  buf;
     size_t buf_len;
@@ -98,10 +91,19 @@ static esp_err_t hello_get_handler(httpd_req_t *req)
 static const httpd_uri_t hello = {
     .uri       = "/hello",
     .method    = HTTP_GET,
-    .handler   = hello_get_handler,
+    .handler   = get_handler,
     /* Let's pass response string in user
      * context to demonstrate it's usage */
-    .user_ctx  = HTML
+    .user_ctx  = HTML_HELLO
+};
+
+static const httpd_uri_t hello = {
+    .uri       = "/info",
+    .method    = HTTP_GET,
+    .handler   = get_handler,
+    /* Let's pass response string in user
+     * context to demonstrate it's usage */
+    .user_ctx  = HTML_MAIN
 };
 
 static httpd_handle_t start_webserver(void)
