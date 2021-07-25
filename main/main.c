@@ -63,8 +63,10 @@ void getWifiConnections()
 	        }
 	}
 
+	esp_wifi_stop();
+
 	if (isFound){
-		// do stuff
+		//
 	}else{
 		ESP_LOGI(TAG,"Network not found.");
 	}
