@@ -18,26 +18,21 @@
 
 #define HTML_MAIN "<!DOCTYPE html>\
 <html lang=\"en-UK\">\
+<head>\
+</head>\
 <script type=\"text/javascript\">\
 	let ip = window.location.href.split(\"/\")[1];\
 	function updateLoop(){\
-		let data = fetch(`${ip}/update`).then(response => {\
-			if (response.status !== 200){\
-				return `Error code: ${response.status}`;\
-			}\
-			response.json().then(data => {\
-				return data;\
-			});\
-			return null;\
+		fetch(`${ip}/update`).then(response => response.json()).then(data => {\
+			let output = `Volume: ${data.Volume}<br>Random value 1: ${data.val1}<br>Random value 2: ${data.val2}`;\
+			document.getElementById(\"data\").innerHTML = output;\
 		});\
-		let output = `Volume: ${data.Volume}\\nRandom value 1: ${data.val1}\\nRandom value 2: ${data.val2}`;\
-		document.getElementById(\"data\").innerHTML = output;\
 	}\
 	window.onload = function() {\
 		updateLoop();\
 		setInterval(()=>{\
 			updateLoop();\
-		},30000); // Every 10 sec\
+		},30000);\
 	}\
 </script>\
 <body>\

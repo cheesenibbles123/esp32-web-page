@@ -78,14 +78,16 @@ static esp_err_t update_get_handler(httpd_req_t *req){
 	cJSON_AddNumberToObject(obj, "Volume", volume);
 	cJSON_AddNumberToObject(obj, "val1", val1);
 	cJSON_AddNumberToObject(obj, "val2", val2);
+
 	char *objData = cJSON_PrintUnformatted(obj);
+	ESP_LOGI(TAG, "%s",objData);
 
 	httpd_resp_send(req, objData, HTTPD_RESP_USE_STRLEN);
 
 	/* After sending the HTTP response the old HTTP request
 	* headers are lost. Check if HTTP request headers can be read now. */
 	if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
-	ESP_LOGI(TAG, "Request headers lost");
+		ESP_LOGI(TAG, "Request headers lost");
 	}
 	return ESP_OK;
 }
